@@ -1,13 +1,12 @@
 function setup() {
   createCanvas(width, height);
-  background(211, 211, 211);
 }
 
 //draw the rocket
 function rocket(x, y) {
   push();
   translate(x, y);
-  scale(0.8);
+  scale(0.5);
 
   fill(105, 105, 105);
   noStroke();
@@ -35,7 +34,7 @@ function rocket(x, y) {
 function flame(x, y) {
   push();
   translate(x, y);
-  scale(0.8);
+  scale(0.5);
 
   noStroke();
   beginShape();
@@ -48,7 +47,24 @@ function flame(x, y) {
 }
 
 //draw the smoke
-function smoke() {}
+function smoke(x, y) {
+  push();
+  translate(x, y);
+  scale(1);
+
+  fill(200);
+  noStroke();
+
+  ellipse(-50, 0, 60);
+  ellipse(-100, 0, 100);
+  ellipse(-150, 0, 140);
+
+  ellipse(50, 0, 60);
+  ellipse(100, 0, 100);
+  ellipse(150, 0, 140);
+
+  pop();
+}
 
 //draw the background
 function scen() {
@@ -88,6 +104,22 @@ function scen() {
   pop();
 }
 
+//draw meteor
+
+function meteor(meteorX, meteorY) {
+  noStroke();
+  fill(255);
+  ellipse(meteorX, meteorY, 16);
+  triangle(
+    meteorX,
+    meteorY + 8,
+    meteorX,
+    meteorY - 8,
+    meteorX + 130,
+    meteorY - 20
+  );
+}
+
 // draw stars
 function star(x, y) {
   push();
@@ -100,10 +132,6 @@ function star(x, y) {
   pop();
 }
 
-// function startGame(){
-
-// }
-
 //indictor
 
 function indicators() {
@@ -112,11 +140,17 @@ function indicators() {
   textSize(18);
   text("Speed:", 20, 20);
   text("Coordinate:", 20, 40);
-  text("Time limits:", 20, 60);
+  text("Fuel:", 20, 60);
   pop();
 }
 
+let meteorX = 400;
+meteorY = 150;
+
 function draw() {
+  background(211, 211, 211);
+
+  smoke(width / 2, height - 100);
   scen();
   star(400, 100);
   star(300, 300);
@@ -130,8 +164,15 @@ function draw() {
   star(560, 150);
   pop();
 
+  indicators();
+
+  meteor(meteorX, meteorY);
+  meteorX -= 1;
+  meteorY += 0.2;
+
+  if (meteorX < 0) {
+  }
+
   rocket(width / 2, height / 2);
   flame(width / 2, height / 2);
-
-  indicators();
 }
