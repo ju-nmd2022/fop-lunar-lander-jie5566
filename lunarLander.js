@@ -52,7 +52,7 @@ function smoke(x, y) {
   translate(x, y);
   scale(1);
 
-  fill(200);
+  fill(180);
   noStroke();
 
   ellipse(-50, 0, 60);
@@ -108,14 +108,14 @@ function scen() {
 
 function meteor(meteorX, meteorY) {
   noStroke();
-  fill(255);
-  ellipse(meteorX, meteorY, 16);
+  fill(230);
+  ellipse(meteorX, meteorY, 12);
   triangle(
     meteorX,
-    meteorY + 8,
+    meteorY + 6,
     meteorX,
-    meteorY - 8,
-    meteorX + 130,
+    meteorY - 6,
+    meteorX + 100,
     meteorY - 20
   );
 }
@@ -144,11 +144,47 @@ function indicators() {
   pop();
 }
 
+//----------------Game screens function---------------
+function startScreen(){
+
+}
+function gameScreen(){
+
+}
+
+function endScreen(){
+
+}
+
+//--------------set variables----------------
+
 let meteorX = 400;
 meteorY = 150;
 
+
+// function state(){
+// if (keyIsPressed(32)){
+//   state="game";
+// }
+// }
+
+// let rocketSetting = {
+//   x: width / 2,
+//   y: height/2,
+//   size: 0.7,
+//   velocity: 0.5,
+//   acceleration: 0.16,
+// };
+
+// let isGameActive = true;
+// let gameState = "start";
+// let result;
+// let rocketLanded;
+
+//-------------draw function------------------
 function draw() {
   background(211, 211, 211);
+
 
   smoke(width / 2, height - 100);
   scen();
@@ -170,8 +206,20 @@ function draw() {
   meteorX -= 1;
   meteorY += 0.2;
 
-  if (meteorX < 0) {
+  if (meteorX < -100) {
+    meteorX = 400;
+    meteorY = 150;
   }
+
+//------------screens--------------
+  // if(state==="start"){
+  //   startScreen();
+  // }else if(state==="game"){
+  //   gameScreen();
+  // }else if(state==="end"){
+  //   endScreen();
+  // }
+
 
   rocket(width / 2, height / 2);
   flame(width / 2, height / 2);
