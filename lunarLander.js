@@ -1,7 +1,3 @@
-function setup() {
-  createCanvas(width, height);
-}
-
 //draw the rocket
 function rocket(x, y) {
   push();
@@ -145,24 +141,22 @@ function indicators() {
 }
 
 //----------------Game screens function---------------
-function startScreen(){
+function startScreen() {}
+function gameScreen() {}
 
-}
-function gameScreen(){
-
-}
-
-function endScreen(){
-
-}
+function endScreen() {}
 
 //--------------set variables----------------
 
-let meteorX = 400;
+let meteorX = 500;
 meteorY = 150;
 
+let y = height / 4;
+let speed = 2;
+let acceleration = 0.2;
+let isGameActive = true;
 
-// function state(){
+// function state()
 // if (keyIsPressed(32)){
 //   state="game";
 // }
@@ -185,8 +179,6 @@ meteorY = 150;
 function draw() {
   background(211, 211, 211);
 
-
-  smoke(width / 2, height - 100);
   scen();
   star(400, 100);
   star(300, 300);
@@ -207,11 +199,11 @@ function draw() {
   meteorY += 0.2;
 
   if (meteorX < -100) {
-    meteorX = 400;
+    meteorX = 500;
     meteorY = 150;
   }
 
-//------------screens--------------
+  //------------screens--------------
   // if(state==="start"){
   //   startScreen();
   // }else if(state==="game"){
@@ -220,7 +212,20 @@ function draw() {
   //   endScreen();
   // }
 
+  rocket(width / 2, y);
+  flame(width / 2, y);
+  y = y + speed;
+  speed = speed + acceleration;
 
-  rocket(width / 2, height / 2);
-  flame(width / 2, height / 2);
+  if (isGameActive) {
+    if (y > height - 300) {
+      smoke(width / 2, height - 100);
+      scen();
+    }
+
+    if (y > height - 150) {
+      x = width / 2;
+      y = height - 150;
+    }
+  }
 }
