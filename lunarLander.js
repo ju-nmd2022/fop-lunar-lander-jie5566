@@ -62,11 +62,17 @@ function smoke(x, y) {
   pop();
 }
 
+//draw the ground
+function ground() {
+  fill(137, 148, 153);
+  noStroke();
+  rect(0, height - 100, width, 100);
+}
+
 //draw the background
 function scen() {
   fill(137, 148, 153);
   noStroke();
-  rect(0, height - 100, width, 100);
 
   push();
   rotate(0.2);
@@ -101,8 +107,15 @@ function scen() {
 }
 
 //draw meteor
+//in each meteor, the x, y position changed as it is defined in the draw function.
+//startX, startY is the star point, when it reach the condition, it will come to the start point.
 
-function meteor(meteorX, meteorY) {
+let meteors = [
+  { x: 500, y: 150, startX: 500, startY: 150 },
+  { x: 400, y: 250, startX: 400, startY: 250 },
+];
+
+function meteorMove(meteorX, meteorY) {
   noStroke();
   fill(230);
   ellipse(meteorX, meteorY, 12);
@@ -143,13 +156,9 @@ function indicators() {
 //----------------Game screens function---------------
 function startScreen() {}
 function gameScreen() {}
-
 function endScreen() {}
 
 //--------------set variables----------------
-
-let meteorX = 500;
-meteorY = 150;
 
 let y = height / 4;
 let speed = 2;
@@ -194,15 +203,6 @@ function draw() {
 
   indicators();
 
-  meteor(meteorX, meteorY);
-  meteorX -= 1;
-  meteorY += 0.2;
-
-  if (meteorX < -100) {
-    meteorX = 500;
-    meteorY = 150;
-  }
-
   //------------screens--------------
   // if(state==="start"){
   //   startScreen();
@@ -212,6 +212,19 @@ function draw() {
   //   endScreen();
   // }
 
+  for (let meteor of meteors) {
+    meteorMove(meteor.x, meteor.y);
+    meteor.x -= 1;
+    meteor.y += 0.2;
+
+    if (meteor.x < -100) {
+      meteor.x = meteor.startX;
+      meteor.y = meteor.startY;
+    }
+  }
+
+  //the rocket part
+
   rocket(width / 2, y);
   flame(width / 2, y);
   y = y + speed;
@@ -220,7 +233,6 @@ function draw() {
   if (isGameActive) {
     if (y > height - 300) {
       smoke(width / 2, height - 100);
-      scen();
     }
 
     if (y > height - 150) {
@@ -228,4 +240,5 @@ function draw() {
       y = height - 150;
     }
   }
+  ground();
 }
