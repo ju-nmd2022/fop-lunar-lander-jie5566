@@ -26,7 +26,7 @@ function rocket(x, y) {
   pop();
 }
 
-//draw the flame
+//draw the flame, it will show if you press the up key.
 function flame(x, y) {
   push();
   translate(x, y);
@@ -42,7 +42,7 @@ function flame(x, y) {
   pop();
 }
 
-//draw the smoke
+//draw the smoke, only show if the rocket is close to the ground
 function smoke(x, y) {
   push();
   translate(x, y);
@@ -62,14 +62,14 @@ function smoke(x, y) {
   pop();
 }
 
-//draw the ground
+//draw the ground, it doesn't change
 function ground() {
   fill(137, 148, 153);
   noStroke();
   rect(0, height - 100, width, 100);
 }
 
-//draw the background
+//draw the galaxy background, it doesn't change
 function scen() {
   fill(137, 148, 153);
   noStroke();
@@ -105,31 +105,7 @@ function scen() {
   ellipse(560, 260, 5);
   pop();
 }
-
-//draw meteor
-//in each meteor, the x, y position changed as it is defined in the draw function.
-//startX, startY is the star point, when it reach the condition, it will come to the start point.
-
-let meteors = [
-  { x: 500, y: 150, startX: 500, startY: 150 },
-  { x: 400, y: 250, startX: 400, startY: 250 },
-];
-
-function meteorMove(meteorX, meteorY) {
-  noStroke();
-  fill(230);
-  ellipse(meteorX, meteorY, 12);
-  triangle(
-    meteorX,
-    meteorY + 6,
-    meteorX,
-    meteorY - 6,
-    meteorX + 100,
-    meteorY - 20
-  );
-}
-
-// draw stars
+// draw stars, it doesn't change
 function star(x, y) {
   push();
   translate(x, y);
@@ -141,19 +117,37 @@ function star(x, y) {
   pop();
 }
 
+//draw meteor
+//in each meteor, the x, y position changed as it is defined in the draw function.
+//startX, startY is the star point, when meteor outside of the screen, it will come to the start point.
+//it is an object in a array with 4 parameters
+
+let meteors = [
+  { x: 500, y: 150, startX: 500, startY: 150 },
+  { x: 400, y: 250, startX: 400, startY: 250 },
+  { x: 800, y: 300, startX: 800, startY: 300 },
+];
+
+function meteorMove(x, y) {
+  noStroke();
+  fill(230);
+  ellipse(x, y, 12);
+  triangle(x, y + 6, x, y - 6, x + 100, y - 20);
+}
+
 //indictor
 
 function indicators() {
   push();
   fill(0, 0, 0);
-  textSize(18);
-  text("Speed:", 20, 20);
-  text("Coordinate:", 20, 40);
-  text("Fuel:", 20, 60);
+  textSize(16);
+  text("SPEED: " + Math.floor(speed * 10) + "km/h", 10, 20);
+  text("FUEL: " + fuel, 10, 50);
   pop();
 }
 
 //----------------Game screens function---------------
+
 function startScreen() {}
 function gameScreen() {}
 function endScreen() {}
@@ -161,28 +155,10 @@ function endScreen() {}
 //--------------set variables----------------
 
 let y = height / 4;
-let speed = 2;
-let acceleration = 0.2;
+let speed = 0.5;
+let acceleration = 0.1;
 let isGameActive = true;
-
-// function state()
-// if (keyIsPressed(32)){
-//   state="game";
-// }
-// }
-
-// let rocketSetting = {
-//   x: width / 2,
-//   y: height/2,
-//   size: 0.7,
-//   velocity: 0.5,
-//   acceleration: 0.16,
-// };
-
-// let isGameActive = true;
-// let gameState = "start";
-// let result;
-// let rocketLanded;
+let fuel = 200;
 
 //-------------draw function------------------
 function draw() {
@@ -197,11 +173,8 @@ function draw() {
   scale(0.6);
   star(820, 350);
   scale(0.8);
-
   star(560, 150);
   pop();
-
-  indicators();
 
   //------------screens--------------
   // if(state==="start"){
@@ -223,15 +196,23 @@ function draw() {
     }
   }
 
-  //the rocket part
+  //rocket mechanics
 
   rocket(width / 2, y);
-  flame(width / 2, y);
   y = y + speed;
   speed = speed + acceleration;
 
+  if (keyIsDown(38)) {
+    //by pressing the up key, y is changed
+    y = y - speed * 1.2;
+    fuel = fuel - 3;
+    speed = speed - 0.5;
+    //flame only shows when pree the up key
+    flame(width / 2, y);
+  }
+
   if (isGameActive) {
-    if (y > height - 300) {
+    if (y > height - 200) {
       smoke(width / 2, height - 100);
     }
 
@@ -241,4 +222,5 @@ function draw() {
     }
   }
   ground();
+  indicators();
 }
