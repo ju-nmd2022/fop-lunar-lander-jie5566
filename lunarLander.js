@@ -135,30 +135,28 @@ function meteorMove(x, y) {
   triangle(x, y + 6, x, y - 6, x + 100, y - 20);
 }
 
+//crash to pieces
+// let crashPieces = [];
+
 //indictor
 
 function indicators() {
   push();
-  fill(0, 0, 0);
+  fill(80);
   textSize(16);
   text("SPEED: " + Math.floor(speed * 10) + "km/h", 10, 20);
   text("FUEL: " + fuel, 10, 50);
   pop();
 }
 
-//----------------Game screens function---------------
-
-function startScreen() {}
-function gameScreen() {}
-function endScreen() {}
-
 //--------------set variables----------------
 
 let y = height / 4;
 let speed = 0.5;
 let acceleration = 0.1;
+let fuel = 150;
+let gameState = "start";
 let isGameActive = true;
-let fuel = 200;
 
 //-------------draw function------------------
 function draw() {
@@ -176,15 +174,6 @@ function draw() {
   star(560, 150);
   pop();
 
-  //------------screens--------------
-  // if(state==="start"){
-  //   startScreen();
-  // }else if(state==="game"){
-  //   gameScreen();
-  // }else if(state==="end"){
-  //   endScreen();
-  // }
-
   for (let meteor of meteors) {
     meteorMove(meteor.x, meteor.y);
     meteor.x -= 1;
@@ -196,23 +185,89 @@ function draw() {
     }
   }
 
-  //rocket mechanics
+  //------------screens--------------
+  if (gameState === "start") {
+    startScreen();
+  } else if (gameState === "play") {
+    indicators();
+    playScreen();
 
-  rocket(width / 2, y);
-  y = y + speed;
-  speed = speed + acceleration;
-
-  if (keyIsDown(38)) {
-    //by pressing the up key, y is changed
-    y = y - speed * 1.2;
-    fuel = fuel - 3;
-    speed = speed - 0.5;
-    //flame only shows when pree the up key
-    flame(width / 2, y);
+    if (y > height - 160 && fuel > 0 && speed * 10 > 0 && speed * 10 <= 30) {
+      gameState = "win";
+      y = height / 4;
+      fuel = 150;
+      speed = 0.5;
+    } else if (
+      y > height - 160 &&
+      (fuel < 0 || speed * 10 < 0 || speed * 10 > 30)
+    ) {
+      gameState = "lose";
+      y = height / 4;
+      fuel = 150;
+      speed = 0.5;
+    }
+  } else if (gameState === "lose") {
+    loseGame();
+  } else if (gameState === "win") {
+    winGame();
   }
 
+  //draw ground in the end to cover the smoke
+  ground();
+}
+
+function keyPressed() {
+  if (keyCode === 32 && gameState === "start") {
+    gameState = "play";
+  } else if (keyCode === 32 && gameState === "lose") {
+    gameState = "play";
+  } else if (keyCode === 32 && gameState === "win") {
+    gameState = "play";
+  }
+}
+//----------------Game screens ---------------
+
+function startScreen() {
+  push();
+  translate(0, 0);
+  fill(80);
+  textSize(22);
+  textAlign(CENTER);
+  push();
+  textSize(35);
+  textStyle(BOLD);
+  text("Lunar Lander", width / 2, height / 2 - 90);
+  pop();
+  text(
+    "You need to land the rocket in the speed between 0-20 km/h,",
+    width / 2,
+    height / 2 - 30
+  );
+  text("before the fuel is finished.", width / 2, height / 2);
+  push();
+  textStyle(BOLD);
+  text("Press space to star playing", width / 2, height / 2 + 40);
+  pop();
+  pop();
+}
+
+function playScreen() {
   if (isGameActive) {
-    if (y > height - 200) {
+    //rocket mechanics
+    rocket(width / 2, y);
+    y = y + speed;
+    speed = speed + acceleration;
+
+    if (keyIsDown(38)) {
+      //by pressing the up key, y is changed
+      y = y - speed * 1.2;
+      fuel = fuel - 3;
+      speed = speed - 0.4;
+      //flame only shows when press the up key
+      flame(width / 2, y);
+    }
+
+    if (y > height - 200 && y < height - 150) {
       smoke(width / 2, height - 100);
     }
 
@@ -221,6 +276,28 @@ function draw() {
       y = height - 150;
     }
   }
-  ground();
-  indicators();
+}
+
+function loseGame() {
+  push();
+  translate(0, 0);
+  fill(80);
+  textSize(22);
+  textAlign(CENTER);
+  text("Sorry, you lose the game", width / 2, height / 2 - 30);
+  text("Press space to play again", width / 2, height / 2);
+  pop();
+}
+
+function winGame() {
+  push();
+  translate(0, 0);
+  fill(80);
+  textSize(22);
+  textFont();
+  textAlign(CENTER);
+  text("Congratulation, you win the game", width / 2, height / 2 - 30);
+  text("Press space to play again", width / 2, height / 2);
+  pop();
+  rocket(width / 2, height - 150);
 }
