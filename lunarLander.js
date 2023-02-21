@@ -148,9 +148,21 @@ function meteorMove(x, y) {
 
 //crash to pieces
 // let crashPieces = [];
-// function crash(){
-
-// }
+function rocketCrash(x, y) {
+  push();
+  translate(x, y);
+  scale(0.5);
+  fill(105, 105, 105);
+  push();
+  rotate(0.2);
+  ellipse(140, 70, 120, 50);
+  pop();
+  rect(-20, 30, 40);
+  quad(-20, 70, -10, 100, 10, 100, 20, 70);
+  quad(-20, 50, -40, 70, -50, 120, -35, 120);
+  quad(20, 50, 40, 70, 50, 120, 35, 120);
+  pop();
+}
 
 //indictor
 
@@ -221,6 +233,7 @@ function draw() {
     }
   } else if (gameState === "lose") {
     loseGame();
+    rocketCrash(width / 2, height - 150);
     // crashSound.play();
   } else if (gameState === "win") {
     winGame();
