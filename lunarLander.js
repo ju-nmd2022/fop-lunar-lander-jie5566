@@ -1,3 +1,14 @@
+//add sound effect to the game, learn from https://www.youtube.com/watch?v=40Me1-yAtTc&t=383s
+// let boostSound;
+// let crashSound;
+// let cheerSound;
+
+// function preload() {
+//   boostSound = loadSound("sound/boost.wav");
+//   crashSound = loadSound("sound/crash.wav");
+//   cheerSound = loadSound("sound/cheer.wav");
+// }
+
 //draw the rocket
 function rocket(x, y) {
   push();
@@ -137,6 +148,9 @@ function meteorMove(x, y) {
 
 //crash to pieces
 // let crashPieces = [];
+// function crash(){
+
+// }
 
 //indictor
 
@@ -156,7 +170,6 @@ let speed = 0.5;
 let acceleration = 0.1;
 let fuel = 150;
 let gameState = "start";
-let isGameActive = true;
 
 //-------------draw function------------------
 function draw() {
@@ -192,14 +205,14 @@ function draw() {
     indicators();
     playScreen();
 
-    if (y > height - 160 && fuel > 0 && speed * 10 > 0 && speed * 10 <= 30) {
+    if (y > height - 160 && fuel > 0 && speed * 10 > 0 && speed * 10 <= 20) {
       gameState = "win";
       y = height / 4;
       fuel = 150;
       speed = 0.5;
     } else if (
       y > height - 160 &&
-      (fuel < 0 || speed * 10 < 0 || speed * 10 > 30)
+      (fuel < 0 || speed * 10 < 0 || speed * 10 > 20)
     ) {
       gameState = "lose";
       y = height / 4;
@@ -208,8 +221,10 @@ function draw() {
     }
   } else if (gameState === "lose") {
     loseGame();
+    // crashSound.play();
   } else if (gameState === "win") {
     winGame();
+    // cheerSound.play();
   }
 
   //draw ground in the end to cover the smoke
@@ -217,11 +232,11 @@ function draw() {
 }
 
 function keyPressed() {
-  if (keyCode === 32 && gameState === "start") {
+  if (keyCode === 13 && gameState === "start") {
     gameState = "play";
-  } else if (keyCode === 32 && gameState === "lose") {
+  } else if (keyCode === 13 && gameState === "lose") {
     gameState = "play";
-  } else if (keyCode === 32 && gameState === "win") {
+  } else if (keyCode === 13 && gameState === "win") {
     gameState = "play";
   }
 }
@@ -246,36 +261,35 @@ function startScreen() {
   text("before the fuel is finished.", width / 2, height / 2);
   push();
   textStyle(BOLD);
-  text("Press space to star playing", width / 2, height / 2 + 40);
+  text("Press enter to star playing", width / 2, height / 2 + 40);
   pop();
   pop();
 }
 
 function playScreen() {
-  if (isGameActive) {
-    //rocket mechanics
-    rocket(width / 2, y);
-    y = y + speed;
-    speed = speed + acceleration;
+  //rocket mechanics
+  rocket(width / 2, y);
+  y = y + speed;
+  speed = speed + acceleration;
 
-    if (keyIsDown(38)) {
-      //by pressing the up key, y is changed
-      y = y - speed * 1.2;
-      fuel = fuel - 3;
-      speed = speed - 0.4;
-      //flame only shows when press the up key
-      flame(width / 2, y);
-    }
-
-    if (y > height - 200 && y < height - 150) {
-      smoke(width / 2, height - 100);
-    }
-
-    if (y > height - 150) {
-      x = width / 2;
-      y = height - 150;
-    }
+  if (keyIsDown(38)) {
+    //by pressing the up key, y is changed
+    y = y - speed * 1.2;
+    fuel = fuel - 3;
+    speed = speed - 0.4;
+    //flame only shows when press the up key
+    flame(width / 2, y);
   }
+
+  if (y > height - 200 && y < height - 150) {
+    smoke(width / 2, height - 100);
+  }
+
+  if (y > height - 150) {
+    x = width / 2;
+    y = height - 150;
+  }
+  // boostSound.play();
 }
 
 function loseGame() {
@@ -285,7 +299,7 @@ function loseGame() {
   textSize(22);
   textAlign(CENTER);
   text("Sorry, you lose the game", width / 2, height / 2 - 30);
-  text("Press space to play again", width / 2, height / 2);
+  text("Press enter to play again", width / 2, height / 2);
   pop();
 }
 
@@ -297,7 +311,8 @@ function winGame() {
   textFont();
   textAlign(CENTER);
   text("Congratulation, you win the game", width / 2, height / 2 - 30);
-  text("Press space to play again", width / 2, height / 2);
+  text("Press enter to play again", width / 2, height / 2);
   pop();
   rocket(width / 2, height - 150);
 }
+//------------------fireworks--------------------
