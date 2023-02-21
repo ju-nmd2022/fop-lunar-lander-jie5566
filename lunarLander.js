@@ -222,10 +222,12 @@ function draw() {
       y = height / 4;
       fuel = 150;
       speed = 0.5;
-    } else if (
-      y > height - 160 &&
-      (fuel < 0 || speed * 10 < 0 || speed * 10 > 20)
-    ) {
+    } else if (y > height - 160 && (speed * 10 < 0 || speed * 10 > 20)) {
+      gameState = "lose";
+      y = height / 4;
+      fuel = 150;
+      speed = 0.5;
+    } else if (fuel < 0) {
       gameState = "lose";
       y = height / 4;
       fuel = 150;
@@ -328,4 +330,3 @@ function winGame() {
   pop();
   rocket(width / 2, height - 150);
 }
-//------------------fireworks--------------------
