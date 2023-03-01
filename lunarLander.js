@@ -4,9 +4,9 @@ let crashSound;
 let cheerSound;
 
 function preload() {
-  boostSound = loadSound("sound/boost.wav");
-  crashSound = loadSound("sound/lose.wav");
-  cheerSound = loadSound("sound/cheer.wav");
+  boostSound = loadSound("/sound/boost.wav");
+  crashSound = loadSound("/sound/lose.wav");
+  cheerSound = loadSound("/sound/cheer.wav");
 }
 
 function setup() {
