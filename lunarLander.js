@@ -1,13 +1,13 @@
 //add sound effect to the game, learn from https://www.youtube.com/watch?v=40Me1-yAtTc&t=383s
-// let boostSound;
-// let crashSound;
-// let cheerSound;
+let boostSound;
+let crashSound;
+let cheerSound;
 
-// function preload() {
-//   boostSound = loadSound("sound/boost.wav");
-//   crashSound = loadSound("sound/crash.wav");
-//   cheerSound = loadSound("sound/cheer.wav");
-// }
+function preload() {
+  boostSound = loadSound("sound/boost.wav");
+  crashSound = loadSound("sound/lose.wav");
+  cheerSound = loadSound("sound/cheer.wav");
+}
 
 function setup() {
   createCanvas(900, 800);
@@ -238,12 +238,14 @@ function draw() {
       speed = 0.5;
     }
   } else if (gameState === "lose") {
+    crashSound.pause();
+    crashSound.play();
     loseGame();
     rocketCrash(450, 650);
-    // crashSound.play();
   } else if (gameState === "win") {
+    cheerSound.pause();
+    cheerSound.play();
     winGame();
-    // cheerSound.play();
   }
 
   //draw ground in the end to cover the smoke
@@ -292,6 +294,9 @@ function playScreen() {
   speed = speed + acceleration;
 
   if (keyIsDown(38)) {
+    boostSound.stop();
+    boostSound.play();
+
     //by pressing the up key, y is changed
     y = y - speed * 1.2;
     fuel = fuel - 3;
@@ -308,7 +313,6 @@ function playScreen() {
     x = 450;
     y = 650;
   }
-  // boostSound.play();
 }
 
 function loseGame() {
