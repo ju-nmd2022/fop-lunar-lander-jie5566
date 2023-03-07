@@ -282,7 +282,11 @@ function startScreen() {
   text("before the fuel is finished.", 450, 400);
   push();
   textStyle(BOLD);
-  text("Press enter to star playing", 450, 440);
+  text(
+    "Press enter to star playing, thrust of rocket with the space key",
+    450,
+    440
+  );
   pop();
   pop();
 }
@@ -293,7 +297,7 @@ function playScreen() {
   y = y + speed;
   speed = speed + acceleration;
 
-  if (keyIsDown(38)) {
+  if (keyIsDown(32)) {
     boostSound.stop();
     boostSound.play();
 
@@ -322,7 +326,11 @@ function loseGame() {
   textSize(22);
   textAlign(CENTER);
   text("Sorry, you lose the game", 450, 370);
-  text("Press enter to play again", 450, 400);
+  text(
+    "Press enter to play again, thrust of rocket with the space key",
+    450,
+    400
+  );
   pop();
 }
 
@@ -334,7 +342,11 @@ function winGame() {
   textFont();
   textAlign(CENTER);
   text("Congratulation, you win the game", 450, 370);
-  text("Press enter to play again", 450, 400);
+  text(
+    "Press enter to play again, thrust of rocket with the space key",
+    450,
+    400
+  );
   pop();
   rocket(450, 650);
 }
