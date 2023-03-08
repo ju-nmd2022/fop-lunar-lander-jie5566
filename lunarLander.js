@@ -283,7 +283,7 @@ function startScreen() {
   push();
   textStyle(BOLD);
   text(
-    "Press enter to start playing, thrust of rocket with the space key",
+    "Press enter to star playing, thrust of rocket with the space key",
     450,
     440
   );
